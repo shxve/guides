@@ -67,14 +67,20 @@ Follow these steps to install OpenVAS on Ubuntu:
 1. **Create a New Target**:
    - Navigate to `Configuration > Targets`.
    - Click on `New Target`.
-   - Fill in the details such as `Name`, `Hosts`, and `Port List`.
+   - Fill in the details such as `Name`, `Hosts`
+   - Select `Port List` to `Full`: detect all TCP and Nmap top 1000 UDP.
+   - Alive Test: Must be set to `Consider Alive` to detect all the open ports.
    - Save the target.
 
 ### Starting a Scan
 1. **Create a New Task**:
    - Navigate to `Scans > Tasks`.
    - Click on `New Task`.
-   - Fill in the details such as `Name`, `Scan Targets`, and `Scan Config`.
+   - Fill in the details such as `Name` and `Comment`.
+   - Set `Scan Targets` to the previously created Target.
+   - Set `Min QoD` to low values (`20%`).
+   - Set `Scan Config` to `Complete`.
+   - Set Maximum concurrently executed NVTs per host and Maximum concurrently scanned hosts
    - Save the task.
 
 2. **Start the Task**:
@@ -98,7 +104,7 @@ Follow these steps to install OpenVAS on Ubuntu:
 2. **Generate Reports**:
    - Navigate to `Scans > Reports`.
    - Select the desired report and click on `Download`.
-   - Choose the report format (PDF, HTML, etc.).
+   - Choose the report format (XML, CSV, PDF, HTML, TXT).
 
 3. **Documentation**:
    - Document all identified vulnerabilities, remediation actions taken, and any remaining risks.
