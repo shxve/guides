@@ -67,7 +67,7 @@ Follow these steps to install OpenVAS on Kali using [Docker](https://docs.docker
 
 7. **Start the Containers & enable Log output**:
     ```bash
-    docker compose -f $DOWNLOAD_DIR/docker-compose.yml -p greenbone-community-edition up -d & docker compose -f $DOWNLOAD_DIR/docker-compose.yml -p greenbone-community-edition logs -f
+    sudo docker compose -f $DOWNLOAD_DIR/docker-compose.yml -p greenbone-community-edition up -d && sudo docker compose -f $DOWNLOAD_DIR/docker-compose.yml -p greenbone-community-edition logs -f
     ```
 7. **Change Password of Admin User**:
     By default, a user _admin_ with the password _admin_ is created. This is insecure and it is highly recommended to set a new password.
