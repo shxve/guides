@@ -1,3 +1,4 @@
+
 # OpenVAS Penetration Testing Guide
 
 This guide is intended for cybersecurity analysts looking to utilize OpenVAS for penetration testing. OpenVAS is a powerful open-source tool for vulnerability scanning and management.
@@ -26,32 +27,53 @@ OpenVAS (Open Vulnerability Assessment System) is an open-source tool designed t
 - **Storage**: At least 10GB of free disk space
 - **Network**: Stable internet connection for updates
 
-### Installing OpenVAS
-Follow these steps to install OpenVAS on Ubuntu:
+### Installing OpenVAS using [Docker](https://docs.docker.com/)
+Follow these steps to install OpenVAS on Kali:
 
-1. **Update the package lists**:
+1. **Install Docker**:
     ```bash
     sudo apt update
+	sudo apt install -y docker.io
+	sudo systemctl enable docker --now
+	docker
+	```
+	Add yourself to the docker group to use `docker` without `sudo`
+	```bash
+    sudo usermod -aG docker $USER
+	```
+	The final thing is to **logout and in again**.
+2. **Install Docker-CE**:
+    ```bash
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable" | \ sudo tee /etc/apt/sources.list.d/docker.list
+    curl -fsSL https://download.docker.com/linux/debian/gpg |  sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    sudo apt update
+    sudo apt install -y docker-ce docker-ce-cli containerd.io
+	```
+
+3. **Setup OpenVAS**:
+	Create download directory:
+    ```bash
+    export DOWNLOAD_DIR=$HOME/greenbone-community-container && mkdir -p $DOWNLOAD_DIR
+    ```
+    Download the docker compose file:
+    ```bash
+    cd $DOWNLOAD_DIR && curl -f -L https://greenbone.github.io/docs/latest/_static/docker-compose-22.4.yml -o docker-compose.yml
     ```
 
-2. **Install OpenVAS**:
+6. **Pull the Containers**:
     ```bash
-    sudo apt install openvas
+    docker compose -f $DOWNLOAD_DIR/docker-compose.yml -p greenbone-community-edition pull
     ```
 
-3. **Set up OpenVAS**:
+7. **Start the Containers & enable Log output**:
     ```bash
-    sudo gvm-setup
+    docker compose -f $DOWNLOAD_DIR/docker-compose.yml -p greenbone-community-edition up -d & docker compose -f $DOWNLOAD_DIR/docker-compose.yml -p greenbone-community-edition logs -f
     ```
-
-4. **Start OpenVAS services**:
+7. **Change Password of Admin User**:
+    By default, a user _admin_ with the password _admin_ is created. This is insecure and it is highly recommended to set a new password.
     ```bash
-    sudo gvm-start
-    ```
-
-5. **Check the status**:
-    ```bash
-    sudo gvm-check-setup
+    docker compose -f $DOWNLOAD_DIR/docker-compose.yml -p greenbone-community-edition \
+    exec -u gvmd gvmd gvmd --user=admin --new-password='<password>'
     ```
 
 ## Configuring OpenVAS
@@ -79,8 +101,8 @@ Follow these steps to install OpenVAS on Ubuntu:
    - Fill in the details such as `Name` and `Comment`.
    - Set `Scan Targets` to the previously created Target.
    - Set `Min QoD` to low values (`20%`).
-   - Set `Scan Config` to `Complete`.
-   - Set Maximum concurrently executed NVTs per host and Maximum concurrently scanned hosts
+   - Set `Scan Config` to `Full and Fast`.
+   - Set `Maximum concurrently executed NVTs per host` and `Maximum concurrently scanned hosts`
    - Save the task.
 
 2. **Start the Task**:
