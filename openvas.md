@@ -27,8 +27,8 @@ OpenVAS (Open Vulnerability Assessment System) is an open-source tool designed t
 - **Storage**: At least 10GB of free disk space
 - **Network**: Stable internet connection for updates
 
-### Installing OpenVAS using [Docker](https://docs.docker.com/)
-Follow these steps to install OpenVAS on Kali:
+### Installing OpenVAS
+Follow these steps to install OpenVAS on Kali using [Docker](https://docs.docker.com/):
 
 1. **Install Docker**:
     ```bash
